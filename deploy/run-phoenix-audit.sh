@@ -11,8 +11,26 @@ if [ ! -f "$OUTLOG" ]; then
   touch "$OUTLOG" && chown root:adm "$OUTLOG" && chmod 0640 "$OUTLOG" || true
 fi
 
+# Optional preflight check (if included in /opt/phoenix/deploy)
+if [ -x /opt/phoenix/deploy/check-requirements.sh ]; then
+  /opt/phoenix/deploy/check-requirements.sh >> "$OUTLOG" 2>&1 || true
+fi
+
 # Run audit (append output)
-/opt/phoenix/audit_enhanced.sh >> "$OUTLOG" 2>&1
+# Prefer the installed v3 script (recommended). Fallback to other known names if present.
+AUDIT_CANDIDATES=(/opt/phoenix/audit.sh /opt/phoenix/audit_v3.sh /opt/phoenix/audit_enhanced.sh /usr/local/bin/phoenix-audit.sh)
+RAN=0
+for candidate in "${AUDIT_CANDIDATES[@]}"; do
+  if [ -x "$candidate" ]; then
+    "$candidate" >> "$OUTLOG" 2>&1 || true
+    RAN=1
+    break
+  fi
+done
+
+if [ "$RAN" -eq 0 ]; then
+  echo "[ERROR] No audit script found in known locations; please install v3 to /opt/phoenix/audit.sh" >> "$OUTLOG"
+fi
 
 # Rotate if file exceeds size
 if [ -f "$OUTLOG" ] && [ "$(stat -c%s "$OUTLOG")" -gt $MAX_BYTES ]; then

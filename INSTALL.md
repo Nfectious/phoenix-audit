@@ -17,15 +17,23 @@ STEP 1: Transfer to Servers
   scp v2/audit.sh root@phoenix:/opt/phoenix/
   scp v2/audit.sh root@phoenix:/opt/phoenix/
 
+Before Step 2: Verify prerequisites (recommended):
+  # Either run the helper from this repo before you transfer
+  bash deploy/check-requirements.sh
+  # Or copy the helper to the target host and run it there
+  scp deploy/check-requirements.sh root@phoenix:/opt/phoenix/deploy/check-requirements.sh
+  ssh root@phoenix 'chmod +x /opt/phoenix/deploy/check-requirements.sh && /opt/phoenix/deploy/check-requirements.sh'
+
 STEP 2: Make Executable
   ssh root@phoenix
-  chmod +x /opt/phoenix/audit_enhanced.sh
+  chmod +x /opt/phoenix/audit.sh
 
   ssh root@phoenix
-  chmod +x /opt/phoenix/audit_enhanced.sh
+  chmod +x /opt/phoenix/audit.sh
 
 STEP 3: Run Initial Audit
-  sudo /opt/phoenix/audit_enhanced.sh
+  # v3 does a preflight check and may abort if the root filesystem is critically low on space.
+  sudo /opt/phoenix/audit.sh
 
 STEP 4: Review Results
   cat ~/contabo_audit/summary_latest.txt
@@ -35,7 +43,7 @@ STEP 5: Check for Alerts
 
 STEP 6: Schedule Daily Audits
   sudo crontab -e
-  # Add: 0 3 * * * /opt/phoenix/audit_enhanced.sh 2>&1 | logger -t phoenix-audit
+  # Add: 0 3 * * * /opt/phoenix/audit.sh 2>&1 | logger -t phoenix-audit
 
 Optional: wrapper-based file logging with rotation
   # Copy wrapper and logrotate config to server

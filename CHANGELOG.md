@@ -1,5 +1,15 @@
 # PHOENIX AUDIT SYSTEM — CHANGELOG
 
+## Version 2.1 (Production / v3) (2026-01-07)
+
+### Highlights
+- **Production-grade preflight checks:** v3 aborts safely when the root filesystem is critically low (default requires ~2GB free) to avoid failing mid-audit and corrupting reports.
+- **Improved robustness:** Use of `safe()` and `safe_out()` wrappers for non-fatal command failure handling, more robust Docker and Nginx discovery logic.
+- **Deployment helpers:** `deploy/check-requirements.sh` added to detect missing commands and suggest apt packages; wrapper `deploy/run-phoenix-audit.sh` updated to prefer v3 and to run optional preflight checks.
+- **Minor fixes:** hostname classification logic refined, improved outputs and consistent `summary_latest` linking.
+
+---
+
 ## Version 2.0 Enhanced (2025-01-06)
 
 ### Major Changes

@@ -1,9 +1,10 @@
 # Phoenix Audit System
 
-A lightweight, extensible server audit system for Debian/Ubuntu hosts. This repository packages two releases:
+A lightweight, extensible server audit system for Debian/Ubuntu hosts. This repository packages three releases:
 
 - **v1.0 (Original)** — basic system information collection and status checks (in `v1/audit.sh`).
-- **v2.0 (Enhanced)** — adaptive service fingerprinting (Phoenix), alerting, drift detection, service-specific checks and Docker health inspection (in `v2/audit.sh`).
+- **v2.0 (Enhanced)** — adaptive service fingerprinting and improved checks (in `v2/audit.sh`).
+- **v3.0 (Production)** — Production-grade (VERSION=2.1) audit with robust preflight storage checks, improved error handling, and safer service-specific probes (in `v3/audit.sh`).
 
 ---
 
@@ -34,6 +35,7 @@ cat ~/contabo_audit/summary_latest.txt
 ```
 
 Notes:
+- **Prerequisites:** see `REQUIREMENTS.md` for required packages and optional service-specific components. Use `deploy/check-requirements.sh` to detect missing commands and see suggested install commands.
 - Scripts are written for Debian/Ubuntu (systemd, apt). Many commands are POSIX/Bash standard and will work across variants, but some checks (UFW, apt, apachectl) are distro-specific.
 - Running as root gives more complete results; the script warns if run as non-root.
 

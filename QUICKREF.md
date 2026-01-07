@@ -4,8 +4,8 @@
 
 ```bash
 # Transfer to server
-scp v2/audit.sh root@phoenix:/opt/phoenix/
-scp v2/audit.sh root@phoenix:/opt/phoenix/
+scp v3/audit.sh root@phoenix:/opt/phoenix/
+scp v3/audit.sh root@phoenix:/opt/phoenix/
 
 # Make executable & run
 chmod +x /opt/phoenix/audit.sh
@@ -16,6 +16,12 @@ scp deploy/run-phoenix-audit.sh root@phoenix:/usr/local/bin/run-phoenix-audit.sh
 scp deploy/logrotate.d/phoenix-audit root@phoenix:/etc/logrotate.d/phoenix-audit
 ssh root@phoenix 'chmod +x /usr/local/bin/run-phoenix-audit.sh'
 ```
+
+... (rest unchanged) ...
+
+# Force new audit
+sudo /opt/phoenix/audit.sh
+**Prerequisites:** see `REQUIREMENTS.md` for required packages and optional components. Use `deploy/check-requirements.sh` to verify missing commands and get suggested apt install commands.
 
 ## Essential Commands
 
@@ -30,7 +36,7 @@ cat ~/contabo_audit/alerts_*.txt | tail -20
 cat ~/contabo_audit/server_audit_*.txt | less
 
 # Force new audit
-sudo /opt/phoenix/audit_enhanced.sh
+sudo /opt/phoenix/audit.sh
 
 # Check last run status
 echo $?  # 0=clean, 1=critical alerts
@@ -41,10 +47,10 @@ echo $?  # 0=clean, 1=critical alerts
 ```bash
 # Add to cron (daily 3 AM)
 sudo crontab -e
-0 3 * * * /opt/phoenix/audit_enhanced.sh 2>&1 | logger -t phoenix-audit
+0 3 * * * /opt/phoenix/audit.sh 2>&1 | logger -t phoenix-audit
 
 # With n8n webhook
-0 3 * * * /opt/phoenix/audit_enhanced.sh && curl -X POST "https://n8n.example.com/webhook/audit" -F "file=@$HOME/contabo_audit/summary_latest.txt"
+0 3 * * * /opt/phoenix/audit.sh && curl -X POST "https://n8n.example.com/webhook/audit" -F "file=@$HOME/contabo_audit/summary_latest.txt"
 ```
 
 ## Alert Thresholds
@@ -128,7 +134,7 @@ Warnings: 2           ⚠ Review recommended
 
 ### Exit Codes
 ```bash
-/opt/valkyrie/audit_enhanced.sh
+/opt/phoenix/audit.sh
 if [ $? -eq 1 ]; then
     echo "CRITICAL - Immediate action required"
 else
