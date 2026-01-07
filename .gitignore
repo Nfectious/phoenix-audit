@@ -1,0 +1,16 @@
+# Audit output
+contabo_audit/
+*.tgz
+*.zip
+*.log
+*.pid
+
+# Editor files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
