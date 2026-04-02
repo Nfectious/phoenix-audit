@@ -26,9 +26,9 @@ cd phoenix-audit
 2. Copy the script you want to the target servers, make executable and run once to create baseline reports:
 
 ```bash
-# Example: install enhanced audit to /opt/valkyrie
-scp v2/audit.sh root@yourserver:/opt/valkyrie/audit.sh
-ssh root@yourserver 'chmod +x /opt/valkyrie/audit.sh && /opt/valkyrie/audit.sh'
+# Example: install enhanced audit to /opt/phoenix
+scp v2/audit.sh root@yourserver:/opt/phoenix/audit.sh
+ssh root@yourserver 'chmod +x /opt/phoenix/audit.sh && /opt/phoenix/audit.sh'
 
 # Check quick summary
 cat ~/contabo_audit/summary_latest.txt
