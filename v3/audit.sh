@@ -183,7 +183,7 @@ OS_NAME="$( (safe_out grep PRETTY_NAME= /etc/os-release | cut -d= -f2- | tr -d '
 UPTIME="$(safe uptime -p)"
 LOAD_AVG="$(safe uptime | awk -F'load average:' '{print $2}' || true)"
 
-PORTS="$(safe_out ss -ltnp | awk 'NR==1 || /LISTEN/ {print}' | head -n 20)"
+PORTS="$(safe_out ss -ltnp 2>/dev/null | awk '/LISTEN/ {print $4}' | head -n 20)"
 
 if $HAS_DOCKER; then
   DOCKER_SUMMARY="$(safe_out docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}' | head -n 25)"
